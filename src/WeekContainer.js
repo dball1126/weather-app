@@ -34,9 +34,14 @@ class WeekContainer extends React.Component {
 
     render(){  
         return (
-            <div>
-                <h1>Hello World</h1>
+            <div className="container">
+                <h1 className="display-1 jumbotron">Day Forecast</h1>
+                <h5 className="display-5 text-muted">New York, US</h5>
+                <div className="row justify-content-center">
+
                 {this.days()}
+                
+                </div>
             </div>
         )
     }
