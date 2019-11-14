@@ -61,7 +61,7 @@ class WeekContainer extends React.Component {
                         country: data.city.country
                     })
                 })
-       
+        document.getElementById('elementId').value = '';
     }
 
     update(field) {
@@ -72,14 +72,15 @@ class WeekContainer extends React.Component {
 
 
     render(){  
+        let {city, zipcode, country} = this.state
         return (
             <div className="container">
-                <h1 className="display-1 jumbotron">Day Forecast</h1>
-                 <h5 className="display-4 text-muted">{this.state.city}, {this.state.country}</h5>
+                <h1 className="display-3 jumbotron-fluid" style={{"background-color": "#dff2f8"}}>5 Day Forecast</h1>
+                 <h5 className="display-4 text-muted">{city} {zipcode}, {country}</h5>
                 <form className="display-5 text-muted" onSubmit={this.handleSubmit}>
-                    <label className="zipcode">Enter your Zipcode:
+                    <label className="zipcode">Enter your: {' '}
     
-                <input type="text" placeholder='zipcode' value={this.state.zipcode} onChange={this.update('zipcode')}>
+                <input id="elementId" type="text" placeholder=' Zipcode'  onChange={this.update('zipcode')}>
 
                 </input>
                 </label>
