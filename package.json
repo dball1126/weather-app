@@ -1,7 +1,7 @@
 {
   "name": "new-weather-app",
   "version": "0.1.0",
-  "homepage": "https://dball1126/github.io/weather-app",
+  "homepage": "https://dball1126/github.io/weather-app/",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
