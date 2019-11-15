@@ -22,7 +22,7 @@ class WeekContainer extends React.Component {
         
         let masterKey = key;
         let zipcode = this.state.zipcode;
-        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.weatherKey}`
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.weatherKey}`
         
         fetch(weatherUrl)
             .then(res => res.json())
@@ -50,7 +50,7 @@ class WeekContainer extends React.Component {
         let address = undefined
         let masterKey = key;
         let zipcode = this.state.zipcode;
-        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.weatherKey}`
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.weatherKey}`
         Geocode.setApiKey(`${masterKey.googlekey}`)
         Geocode.setLanguage("en");
         Geocode.setRegion("us");
