@@ -1,6 +1,8 @@
 import React from 'react';
 import key from './apiKeys';
 import Day from './Day';
+import Geocode from "react-geocode";
+
 class WeekContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -9,7 +11,8 @@ class WeekContainer extends React.Component {
             dailyData: [],
             zipcode: 11215,
             city: "Brooklyn",
-            country: "US"
+            country: "US",
+            address: "Brooklyn, NY 11215, USA"
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -19,18 +22,19 @@ class WeekContainer extends React.Component {
         
         let masterKey = key;
         let zipcode = this.state.zipcode;
-        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.key}`
+        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.weatherKey}`
+        
         fetch(weatherUrl)
             .then(res => res.json())
             .then(data => {
                 
                 const dailyData = data.list.filter(current => current.dt_txt.includes("18:00:00"))
                 
-                debugger
+                
                 this.setState({
                     dailyData: dailyData,
                     fullData: data.list
-                }, () => console.log(this.state))
+                })
             })
     }
 
@@ -41,25 +45,40 @@ class WeekContainer extends React.Component {
     }
 
     handleSubmit(e){
-        debugger
-        e.preventDefault();
         
-            let masterKey = key;
-            let zipcode = this.state.zipcode;
-            const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.key}`
+        e.preventDefault();
+        let address = undefined
+        let masterKey = key;
+        let zipcode = this.state.zipcode;
+        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${zipcode},us&APPID=${masterKey.key}`
+        Geocode.setApiKey(`${masterKey.googlekey}`)
+        Geocode.setLanguage("en");
+        Geocode.setRegion("us");
+        
             fetch(weatherUrl)
                 .then(res => res.json())
                 .then(data => {
 
                     const dailyData = data.list.filter(current => current.dt_txt.includes("18:00:00"))
+                    Geocode.fromLatLng(`${data.city.coord.lat}`, `${data.city.coord.lon}`).then(
+                        response => {
 
-                    this.setState({
-                        dailyData: dailyData,
-                        fullData: data.list,
-                        zipcode: zipcode,
-                        city: data.city.name,
-                        country: data.city.country
-                    })
+                            
+                            address = response.results[0].formatted_address.split(",").slice(1).join(",");
+
+                        }, error => {
+                            console.error(error)
+                        }
+                    ).then(() => this.setState({ address: address}))
+                        
+                        this.setState({
+                            dailyData: dailyData,
+                            fullData: data.list,
+                            zipcode: zipcode,
+                            city: data.city.name,
+                            country: data.city.country
+                        })
+                        
                 })
         document.getElementById('elementId').value = '';
     }
@@ -72,11 +91,11 @@ class WeekContainer extends React.Component {
 
 
     render(){  
-        let {city, zipcode, country} = this.state
+        let {address} = this.state
         return (
             <div className="container">
-                <h1 className="display-3 jumbotron-fluid" style={{"background-color": "#dff2f8"}}>5 Day Forecast</h1>
-                 <h5 className="display-4 text-muted">{city} {zipcode}, {country}</h5>
+                <h1 className="display-3 jumbotron-fluid" style={{ "backgroundColor": "#dff2f8", "color": "#e81296"}}>5 Day Forecast</h1>
+                 <h5 className="display-4 text-muted">{address}</h5>
                 <form className="display-5 text-muted" onSubmit={this.handleSubmit}>
                     <label className="zipcode">Enter your: {' '}
     
